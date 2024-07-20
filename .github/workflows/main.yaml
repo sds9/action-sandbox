@@ -13,3 +13,8 @@ jobs:
         uses: sds9/action-sandbox@main
         with:
           example-input: 'World'
+
+      - name: Use composite action
+        uses: sds9/action-sandbox/utils@main
+        with:
+          example-input: 'GitHub'
