@@ -23,26 +23,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Echo GitHub event
-        run: |
-          echo '${{ toJson(github) }}' | jq .
-          git diff --name-only main...${{ github.ref_name }}
+      # - name: Echo GitHub event
+      #   run: |
+      #     echo '${{ toJson(github) }}' | jq .
 
       - name: Check changed files
         id: changed-files
         run: echo ::set-output name=files::$(git diff --name-only main...${{ github.ref_name }})
 
-      - name: Check Docker image changes
-        id: docker-changed
-        run: |
-          if [[ $(echo "${{ steps.changed-files.outputs.files }}" | grep -c 'Dockerfile') -gt 0 ]]; then
-            echo "Dockerfile changed"
-            echo ::set-output name=changed::'Dockerfile'
-          else
-            echo "Dockerfile not changed"
-            echo ::set-output name=changed::'none'
-          fi
+      # - name: Check changed files
+      #   id: changed-files
+      #   run: echo ::set-output name=files::$(git diff --name-only main...${{ github.ref_name }})
+
+      # - name: Check Docker image changes
+      #   id: docker-changed
+      #   run: |
+      #     if [[ $(echo "${{ steps.changed-files.outputs.files }}" | grep -c 'Dockerfile') -gt 0 ]]; then
+      #       echo "Dockerfile changed"
+      #       echo ::set-output name=changed::'Dockerfile'
+      #     else
+      #       echo "Dockerfile not changed"
+      #       echo ::set-output name=changed::'none'
+      #     fi
           
-      - name: Build Docker image
-        if: steps.docker-changed.outputs.changed == 'Dockerfile'
-        run: docker build -t my-docker-image .
+      # - name: Build Docker image
+      #   if: steps.docker-changed.outputs.changed == 'Dockerfile'
+      #   run: docker build -t my-docker-image .
