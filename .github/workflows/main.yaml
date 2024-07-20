@@ -6,8 +6,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
 
       - name: Use composite action
         uses: sds9/action-sandbox@main
