@@ -20,6 +20,9 @@ jobs:
   build-docker-image:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Check Docker image changes
         id: docker-changed
         run: echo ::set-output name=changed::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'Dockerfile')
