@@ -28,6 +28,11 @@ jobs:
       - name: Fetch all branches
         run: git fetch --all
 
+      - name: Verify branches
+        run: |
+          git show-ref --verify --quiet refs/heads/main || echo "Main branch does not exist"
+          git show-ref --verify --quiet refs/heads/${{ github.ref_name }} || echo "Target branch does not exist"
+  
       # - name: Echo GitHub event
       #   run: |
       #     echo '${{ toJson(github) }}' | jq .
