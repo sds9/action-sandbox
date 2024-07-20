@@ -26,6 +26,10 @@ jobs:
       - name: Echo GitHub event
         run: echo '${{ toJson(github) }}' | jq .
 
+      - name: Check changed files
+        id: changed-files
+        run: echo ::set-output name=files::$(git diff --name-only main...${{ github.ref_name }})
+
       - name: Check Docker image changes
         id: docker-changed
         run: |
