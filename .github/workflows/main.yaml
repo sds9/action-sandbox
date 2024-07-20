@@ -1,6 +1,6 @@
 name: CI
 
-on: [push]
+on: push
 
 jobs:
   build:
@@ -10,6 +10,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Use composite action
-        uses: ./
+        uses: sds9/action-sandbox@main
         with:
           example-input: 'World'
