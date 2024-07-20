@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Echo GitHub event
-        run: echo ${{ toJson(github) }}
+        run: echo '${{ toJson(github) }}' | jq .
 
       - name: Check Docker image changes
         id: docker-changed
