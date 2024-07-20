@@ -3,15 +3,27 @@ name: CI
 on: push
 
 jobs:
-  build:
+  # test-actions:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Use sds9/action-sandbox@main
+  #       uses: sds9/action-sandbox@main
+  #       with:
+  #         example-input: 'World'
+
+  #     - name: Use sds9/action-sandbox/utils@main
+  #       uses: sds9/action-sandbox/utils@main
+  #       with:
+  #         example-input: 'GitHub'
+
+
+  build-docker-image:
     runs-on: ubuntu-latest
     steps:
-      - name: Use sds9/action-sandbox@main
-        uses: sds9/action-sandbox@main
-        with:
-          example-input: 'World'
+      - name: Check Docker image changes
+        id: docker-changed
+        run: echo ::set-output name=changed::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'Dockerfile')
 
-      - name: Use sds9/action-sandbox/utils@main
-        uses: sds9/action-sandbox/utils@main
-        with:
-          example-input: 'GitHub'
+      - name: Build Docker image
+        run: docker build -t my-docker-image .
+        if: steps.docker-changed.outputs.changed == 'Dockerfile'
