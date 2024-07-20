@@ -28,7 +28,13 @@ jobs:
 
       - name: Check Docker image changes
         id: docker-changed
-        run: echo ::set-output name=changed::$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'Dockerfile')
+        run: |
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'Dockerfile')
+          if [ -n "$changed_files" ]; then
+            echo "::set-output name=changed::Dockerfile"
+          else
+            echo "::set-output name=changed::"
+          fi
 
       - name: Build Docker image
         run: docker build -t my-docker-image .
