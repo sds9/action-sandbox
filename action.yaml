@@ -1,17 +1,16 @@
-name: 'My Composite Action'
-description: 'An example composite action'
+# action.yml
+name: 'Hello World'
+description: 'Greet someone and record the time'
 inputs:
-  example-input:
-    description: 'An example input'
+  who-to-greet:  # id of input
+    description: 'Who to greet'
     required: true
-    default: 'default value'
-
+    default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
 runs:
-  using: 'composite'
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Run a script
-      run: echo "Hello, ${{ inputs.example-input }}!"
-      shell: bash
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.who-to-greet }}
