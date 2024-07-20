@@ -22,6 +22,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all branches
+  
+      - name: Fetch all branches
+        run: git fetch --all
 
       # - name: Echo GitHub event
       #   run: |
