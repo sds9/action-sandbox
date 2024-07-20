@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetch all branches
   
@@ -33,6 +33,22 @@ jobs:
           git show-ref --verify --quiet refs/heads/main || echo "Main branch does not exist"
           git show-ref --verify --quiet refs/heads/${{ github.ref_name }} || echo "Target branch does not exist"
   
+      - name: Verify branches
+        id: verify-branches
+        run: |
+          if git show-ref --verify --quiet refs/heads/main; then
+            echo "main exists" >> $GITHUB_ENV
+            echo "BASE_BRANCH=main" >> $GITHUB_ENV
+          else
+            echo "Main branch does not exist"
+            if git show-ref --verify --quiet refs/heads/master; then
+              echo "master exists" >> $GITHUB_ENV
+              echo "BASE_BRANCH=master" >> $GITHUB_ENV
+            else
+              echo "No main or master branch found"
+              echo "BASE_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
+            fi
+          fi
       # - name: Echo GitHub event
       #   run: |
       #     echo '${{ toJson(github) }}' | jq .
