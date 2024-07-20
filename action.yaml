@@ -1,0 +1,17 @@
+name: 'My Composite Action'
+description: 'An example composite action'
+inputs:
+  example-input:
+    description: 'An example input'
+    required: true
+    default: 'default value'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run a script
+      run: echo "Hello, ${{ inputs.example-input }}!"
+      shell: bash
