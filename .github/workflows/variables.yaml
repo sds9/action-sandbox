@@ -22,11 +22,25 @@ env:
 jobs:
   start:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [dev, prod]
     steps:
-      - name: Display environment variables for environment
+      - name: Set environment variables
         run: |
-          ENVIRONMENT=${{ github.event.inputs.environment }}
-          echo "Environment: $ENVIRONMENT"
-          echo "Account number: ${{ env[${ENVIRONMENT}_account_number] }}"
-          echo "Region: ${{ env[${ENVIRONMENT}_region] }}"
-          echo "Bucket: ${{ env[${ENVIRONMENT}_bucket] }}"
+          if [ "${{ matrix.environment }}" == "dev" ]; then
+            echo "ACCOUNT_NUMBER=123456789012" >> $GITHUB_ENV
+            echo "REGION=us-west-2" >> $GITHUB_ENV
+            echo "BUCKET=my-dev-bucket" >> $GITHUB_ENV
+          elif [ "${{ matrix.environment }}" == "prod" ]; then
+            echo "ACCOUNT_NUMBER=210987654321" >> $GITHUB_ENV
+            echo "REGION=us-east-1" >> $GITHUB_ENV
+            echo "BUCKET=my-prod-bucket" >> $GITHUB_ENV
+          fi
+
+      - name: Display environment variables
+        run: |
+          echo "Environment: ${{ matrix.environment }}"
+          echo "Account number: $ACCOUNT_NUMBER"
+          echo "Region: $REGION"
+          echo "Bucket: $BUCKET"
