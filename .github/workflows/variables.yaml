@@ -25,7 +25,8 @@ jobs:
     steps:
       - name: Display environment variables for environment
         run: |
-          echo "Environment: ${{ github.event.inputs.environment }}"
-          echo "Account number: ${{ env[${{ github.event.inputs.environment }}_account_number] }}"
-          echo "Region: ${{ env[${{ github.event.inputs.environment }}_region] }}"
-          echo "Bucket: ${{ env[${{ github.event.inputs.environment }}_bucket }}"
+          ENVIRONMENT=${{ github.event.inputs.environment }}
+          echo "Environment: $ENVIRONMENT"
+          echo "Account number: ${{ env[${ENVIRONMENT}_account_number] }}"
+          echo "Region: ${{ env[${ENVIRONMENT}_region] }}"
+          echo "Bucket: ${{ env[${ENVIRONMENT}_bucket] }}"
