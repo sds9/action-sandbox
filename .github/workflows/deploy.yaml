@@ -36,3 +36,10 @@ jobs:
           pending_jobs=$(gh api -X GET /repos/${{ github.repository }}/actions/runs --jq '.workflow_runs[] | select(.conclusion == null and .name == "deploy") | .id')
           echo "pending_jobs=$pending_jobs" >> $GITHUB_ENV
           echo $pending_jobs
+
+      - name: Cancel pending deployments
+        if: env.pending_jobs
+        run: |
+          for job in $pending_jobs; do
+            gh api -X POST /repos/${{ github.repository }}/actions/runs/$job/cancel
+          done
