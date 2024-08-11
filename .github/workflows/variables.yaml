@@ -9,19 +9,21 @@ on:
         type: choice
         options:
           - dev
+          - test
           - prod
+
+env:
+  ACCOUNT_NUMBER: ${{ inputs.environment == 'dev' && '123456789012' || inputs.environment == 'test' && '111111111111' || '210987654321' }}
+  REGION: ${{ inputs.environment == 'dev' && 'us-west-2' || inputs.environment == 'test' && 'us-central-1' || 'us-east-1' }}
+  BUCKET: ${{ inputs.environment == 'dev' && 'my-dev-bucket' || inputs.environment == 'test' && 'my-test-bucket' || 'my-prod-bucket' }}
 
 jobs:
   start:
     runs-on: ubuntu-latest
-    env:
-      ACCOUNT_NUMBER: ${{ github.event.inputs.environment == 'dev' && '123456789012' || '210987654321' }}
-      REGION: ${{ github.event.inputs.environment == 'dev' && 'us-west-2' || 'us-east-1' }}
-      BUCKET: ${{ github.event.inputs.environment == 'dev' && 'my-dev-bucket' || 'my-prod-bucket' }}
     steps:
       - name: Display environment variables
         run: |
-          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "Environment: ${{ inputs.environment }}"
           echo "Account number: $ACCOUNT_NUMBER"
           echo "Region: $REGION"
           echo "Bucket: $BUCKET"
