@@ -26,6 +26,12 @@ jobs:
       - name: Work
         run: |
           for i in {1..6}; do
-            echo ${{ needs.deploy.outputs.status }}
-            sleep 10
+            echo ${{ toJson( github ) }}
+            sleep 1
           done
+
+      - name: Check for pending deployments
+        id: check
+        run: |
+          pending_jobs=$(gh api -X GET /repos/${{ github.repository }}/actions/runs --jq '.workflow_runs[] | select(.conclusion == null and .name == "deploy") | .id')
+          echo "pending_jobs=$pending_jobs" >> $GITHUB_ENV
