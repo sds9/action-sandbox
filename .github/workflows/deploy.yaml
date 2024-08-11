@@ -26,7 +26,6 @@ jobs:
       - name: Work
         run: |
           for i in {1..6}; do
-            echo ${{ toJson( github ) }}
             sleep 1
           done
 
