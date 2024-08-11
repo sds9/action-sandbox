@@ -16,7 +16,6 @@ env:
   ACCOUNT_NUMBER: ${{ inputs.environment == 'dev' && '123456789012' || inputs.environment == 'test' && '111111111111' || '210987654321' }}
   REGION: ${{ inputs.environment == 'dev' && 'us-west-2' || inputs.environment == 'test' && 'us-central-1' || 'us-east-1' }}
   BUCKET: ${{ inputs.environment == 'dev' && 'my-dev-bucket' || inputs.environment == 'test' && 'my-test-bucket' || 'my-prod-bucket' }}
-  ACCOUNT_NUMBER_AND_REGION: ${{ env.ACCOUNT_NUMBER }}-${{ env.REGION }}
 
 jobs:
   start:
@@ -24,7 +23,6 @@ jobs:
     steps:
       - name: Display environment variables
         run: |
-          echo "ACCOUNT_NUMBER_AND_REGION: $ACCOUNT_NUMBER_AND_REGION"
           echo "Environment: ${{ inputs.environment }}"
           echo "Account number: $ACCOUNT_NUMBER"
           echo "Region: $REGION"
