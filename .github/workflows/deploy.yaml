@@ -19,8 +19,8 @@ jobs:
     steps:
       - name: Deploy
         run: echo "Deploying to production"
-  work:
-    needs: start
+  monitor-deploy:
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Work
