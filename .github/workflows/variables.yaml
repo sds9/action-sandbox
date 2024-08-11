@@ -11,36 +11,21 @@ on:
           - dev
           - prod
 
-env:
-  dev_account_number: 123456789012
-  prod_account_number: 210987654321
-  dev_region: us-west-2
-  prod_region: us-east-1
-  dev_bucket: my-dev-bucket
-  prod_bucket: my-prod-bucket
-
 jobs:
   start:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        environment: [dev, prod]
+    env:
+      ACCOUNT_NUMBER: ${{ github.event.inputs.environment == 'dev' && '123456789012' || '210987654321' }}
+      REGION: ${{ github.event.inputs.environment == 'dev' && 'us-west-2' || 'us-east-1' }}
+      BUCKET: ${{ github.event.inputs.environment == 'dev' && 'my-dev-bucket' || 'my-prod-bucket' }}
     steps:
-      - name: Set environment variables
-        run: |
-          if [ "${{ matrix.environment }}" == "dev" ]; then
-            echo "ACCOUNT_NUMBER=123456789012" >> $GITHUB_ENV
-            echo "REGION=us-west-2" >> $GITHUB_ENV
-            echo "BUCKET=my-dev-bucket" >> $GITHUB_ENV
-          elif [ "${{ matrix.environment }}" == "prod" ]; then
-            echo "ACCOUNT_NUMBER=210987654321" >> $GITHUB_ENV
-            echo "REGION=us-east-1" >> $GITHUB_ENV
-            echo "BUCKET=my-prod-bucket" >> $GITHUB_ENV
-          fi
-
       - name: Display environment variables
         run: |
-          echo "Environment: ${{ matrix.environment }}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
           echo "Account number: $ACCOUNT_NUMBER"
           echo "Region: $REGION"
           echo "Bucket: $BUCKET"
+
+      - name: Example step using environment variables
+        run: |
+          echo "Deploying to account $ACCOUNT_NUMBER in region $REGION using bucket $BUCKET"
