@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # test-actions:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Use sds9/action-sandbox@main
+  #       uses: sds9/action-sandbox@main
+  #       with:
+  #         example-input: 'World'
+
+  #     - name: Use sds9/action-sandbox/utils@main
+  #       uses: sds9/action-sandbox/utils@main
+  #       with:
+  #         example-input: 'GitHub'
+
+
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all branches
+  
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Verify branches
+        run: |
+          git show-ref --verify --quiet refs/heads/main || echo "Main branch does not exist"
+          git show-ref --verify --quiet refs/heads/${{ github.ref_name }} || echo "Target branch does not exist"
+  
+      - name: Verify branches
+        id: verify-branches
+        run: |
+          if git show-ref --verify --quiet refs/heads/main; then
+            echo "main exists" >> $GITHUB_ENV
+            echo "BASE_BRANCH=main" >> $GITHUB_ENV
+          else
+            echo "Main branch does not exist"
+            if git show-ref --verify --quiet refs/heads/master; then
+              echo "master exists" >> $GITHUB_ENV
+              echo "BASE_BRANCH=master" >> $GITHUB_ENV
+            else
+              echo "No main or master branch found"
+              echo "BASE_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
+            fi
+          fi
+      # - name: Echo GitHub event
+      #   run: |
+      #     echo '${{ toJson(github) }}' | jq .
+
+      - name: Check changed files
+        id: changed-files
+        run: git diff --name-only main...${{ github.ref_name }}
+
+      # - name: Check changed files
+      #   id: changed-files
+      #   run: echo ::set-output name=files::$(git diff --name-only main...${{ github.ref_name }})
+
+      # - name: Check Docker image changes
+      #   id: docker-changed
+      #   run: |
+      #     if [[ $(echo "${{ steps.changed-files.outputs.files }}" | grep -c 'Dockerfile') -gt 0 ]]; then
+      #       echo "Dockerfile changed"
+      #       echo ::set-output name=changed::'Dockerfile'
+      #     else
+      #       echo "Dockerfile not changed"
+      #       echo ::set-output name=changed::'none'
+      #     fi
+          
+      # - name: Build Docker image
+      #   if: steps.docker-changed.outputs.changed == 'Dockerfile'
+      #   run: docker build -t my-docker-image .
