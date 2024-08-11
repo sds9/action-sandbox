@@ -15,10 +15,13 @@ jobs:
     needs: start
     environment: 
       name: prod
-      wait_timer: 30m
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Deploy
         run: echo "Deploying to production"
+  work:
+    needs: start
+    runs-on: ubuntu-latest
+    steps:
+      - name: Work
+        run: echo "Working"
