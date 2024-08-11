@@ -6,14 +6,16 @@ on:
       - main
 
 jobs:
-  test-actions:
+  start:
     runs-on: ubuntu-latest
     steps:
       - name: Say hello
         run: echo "Hello, ${{ github.actor }}"
   deploy:
-    needs: test-actions
-    environment: prod
+    needs: start
+    environment: 
+      name: prod
+      wait_timer: 30m
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
