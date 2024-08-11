@@ -1,14 +1,31 @@
-name: deploy
-env:
-  GH_TOKEN: ${{ github.token }}
+name: variables
+
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+
+env:
+  dev_account_number: 123456789012
+  prod_account_number: 210987654321
+  dev_region: us-west-2
+  prod_region: us-east-1
+  dev_bucket: my-dev-bucket
+  prod_bucket: my-prod-bucket
 
 jobs:
   start:
     runs-on: ubuntu-latest
     steps:
-      - name: Say hello
-        run: echo "Hello, ${{ github.actor }}"
+      - name: Display environment variables for environment
+        run: |
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "Account number: ${{ env[${{ github.event.inputs.environment }}_account_number] }}"
+          echo "Region: ${{ env[${{ github.event.inputs.environment }}_region] }}"
+          echo "Bucket: ${{ env[${{ github.event.inputs.environment }}_bucket }}"
