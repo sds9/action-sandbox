@@ -1,0 +1,14 @@
+name: deploy
+env:
+  GH_TOKEN: ${{ github.token }}
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: echo "Hello, ${{ github.actor }}"
