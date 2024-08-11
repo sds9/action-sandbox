@@ -24,4 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Work
-        run: echo ${{ needs.deploy.outputs.status }}
+        run: |
+          for i in {1..6}; do
+            echo ${{ needs.deploy.outputs.status }}
+            sleep 10
+          done
