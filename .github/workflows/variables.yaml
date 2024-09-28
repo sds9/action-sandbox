@@ -27,3 +27,11 @@ jobs:
         run: |
           echo "Multiline output:"
           echo "${{ steps.set-and-use-multiline-output.outputs.multiline-output }}"
+      - name: python multiline
+        id: python
+        run: python3 multiline.py
+
+      - name: read python multiline
+        run: |
+          echo "Multiline output:"
+          echo "${{ steps.python.outputs.output }}"
