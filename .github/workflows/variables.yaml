@@ -1,16 +1,17 @@
 name: variables
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        type: choice
-        options:
-          - dev
-          - test
-          - prod
+  push:
+  # workflow_dispatch:
+  #   inputs:
+  #     environment:
+  #       description: 'Environment to deploy to'
+  #       required: true
+  #       type: choice
+  #       options:
+  #         - dev
+  #         - test
+  #         - prod
 
 env:
   ACCOUNT_NUMBER: ${{ inputs.environment == 'dev' && '123456789012' || inputs.environment == 'test' && '111111111111' || '210987654321' }}
