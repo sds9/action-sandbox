@@ -26,4 +26,4 @@ jobs:
       - name: Use multiline output
         run: |
           echo "Multiline output:"
-          echo ${{ steps.set-and-use-multiline-output.outputs.multiline-output }}
+          echo "${{ steps.set-and-use-multiline-output.outputs.multiline-output }}"
