@@ -45,6 +45,7 @@ jobs:
           echo "Line 2" >> $GITHUB_OUTPUT
           echo "Line 3" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          echo "${multiline-output}"
 
       - name: Use multiline output
         run: |
