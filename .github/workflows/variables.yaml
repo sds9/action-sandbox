@@ -18,16 +18,34 @@ env:
   BUCKET: ${{ inputs.environment == 'dev' && 'my-dev-bucket' || inputs.environment == 'test' && 'my-test-bucket' || 'my-prod-bucket' }}
 
 jobs:
-  start:
+  # start:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Display environment variables
+  #       run: |
+  #         echo "Environment: ${{ inputs.environment }}"
+  #         echo "Account number: $ACCOUNT_NUMBER"
+  #         echo "Region: $REGION"
+  #         echo "Bucket: $BUCKET"
+
+  #     - name: Example step using environment variables
+  #       run: |
+  #         echo "Deploying to account $ACCOUNT_NUMBER in region $REGION using bucket $BUCKET"
+      
+
+  example-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Display environment variables
+      - name: Set multiline output
+        id: set-output
         run: |
-          echo "Environment: ${{ inputs.environment }}"
-          echo "Account number: $ACCOUNT_NUMBER"
-          echo "Region: $REGION"
-          echo "Bucket: $BUCKET"
+          echo "multiline-output<<EOF" >> $GITHUB_OUTPUT
+          echo "Line 1" >> $GITHUB_OUTPUT
+          echo "Line 2" >> $GITHUB_OUTPUT
+          echo "Line 3" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Example step using environment variables
+      - name: Use multiline output
         run: |
-          echo "Deploying to account $ACCOUNT_NUMBER in region $REGION using bucket $BUCKET"
+          echo "Multiline output:"
+          echo "${{ steps.set-output.outputs['multiline-output'] }}"
