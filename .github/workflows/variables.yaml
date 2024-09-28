@@ -2,38 +2,8 @@ name: variables
 
 on:
   push:
-  # workflow_dispatch:
-  #   inputs:
-  #     environment:
-  #       description: 'Environment to deploy to'
-  #       required: true
-  #       type: choice
-  #       options:
-  #         - dev
-  #         - test
-  #         - prod
-
-# env:
-#   ACCOUNT_NUMBER: ${{ inputs.environment == 'dev' && '123456789012' || inputs.environment == 'test' && '111111111111' || '210987654321' }}
-#   REGION: ${{ inputs.environment == 'dev' && 'us-west-2' || inputs.environment == 'test' && 'us-central-1' || 'us-east-1' }}
-#   BUCKET: ${{ inputs.environment == 'dev' && 'my-dev-bucket' || inputs.environment == 'test' && 'my-test-bucket' || 'my-prod-bucket' }}
 
 jobs:
-  # start:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Display environment variables
-  #       run: |
-  #         echo "Environment: ${{ inputs.environment }}"
-  #         echo "Account number: $ACCOUNT_NUMBER"
-  #         echo "Region: $REGION"
-  #         echo "Bucket: $BUCKET"
-
-  #     - name: Example step using environment variables
-  #       run: |
-  #         echo "Deploying to account $ACCOUNT_NUMBER in region $REGION using bucket $BUCKET"
-      
-
   example-job:
     runs-on: ubuntu-latest
     steps:
@@ -56,4 +26,4 @@ jobs:
       - name: Use multiline output
         run: |
           echo "Multiline output:"
-          echo ${{ steps.set-and-use-multiline-output.outputs.multiline_output }}
+          echo ${{ steps.set-and-use-multiline-output.outputs.multiline-output }}
