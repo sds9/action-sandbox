@@ -1,11 +1,11 @@
 import os
 
 output = """
-```bash
+\`\`\`bash
 line1
 line2
 line3
-```
+\`\`\`
 """
 
 with open(os.getenv('GITHUB_OUTPUT'), 'a') as f:
