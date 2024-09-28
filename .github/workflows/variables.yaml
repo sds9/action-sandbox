@@ -36,3 +36,4 @@ jobs:
         run: |
           echo "Multiline output:"
           echo "${{ steps.python.outputs.output }}"
+          echo "${{ steps.python.outputs.output }}" >> $GITHUB_STEP_SUMMARY
